@@ -1,0 +1,20 @@
+{
+  "name": "1D-em-up",
+  "version": "0.0.0",
+  "description": "A simple native Javascript game",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "game",
+    "side-scrolling",
+    "2D",
+    "simple"
+  ],
+  "author": "Sam Cook",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^1.20.1"
+  }
+}
