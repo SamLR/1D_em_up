@@ -39,8 +39,16 @@
         game.player = {
             x: 0,
             y: 450,
-            x2: 50,
-            y2: 500
+            width: 50,
+            height: 50,
+            draw: function() {
+                game.context.fillStyle = 'rgba(0, 0, 0, 1)';
+                game.context.fillRect(this.x,
+                                      this.y,
+                                      this.width,
+                                      this.height);
+                game.context.restore();
+            }
         };
         console.log('finished init');
         requestAnimationFrame(render);
@@ -51,23 +59,12 @@
         // resolve jump
         // after X distance -> new screen
         game.player.x  += 5;
-        game.player.x2 += 5;
 
         if (game.player.x > game.canvas.width) {
             game.player.x = 0;
-            game.player.x2 = 50;
         }
     }
 
-    function drawPlayer() {
-        var x = game.player.x,
-            y = game.player.y,
-            x2 = game.player.x2,
-            y2 = game.player.y2;
-        game.context.fillStyle = 'rgba(0, 0, 0, 1)';
-        game.context.fillRect(x, y, x2, y2);
-        game.context.restore();
-    }
 
     function drawBackground () {
         game.context.fillStyle = 'rgba(255, 0, 0, 0.5)';
@@ -96,7 +93,7 @@
         game.context.clearRect(0, 0, game.canvas.width, game.canvas.height);
         update(dt);
         drawBackground();
-        drawPlayer();
+        game.player.draw();
     }
 
     init();
