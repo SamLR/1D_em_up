@@ -17,13 +17,15 @@ graphicsUtils = (function() {
                 y = _y;
                 y2 = _y + height;
             },
+            incX: function(_dx) {this.setX(x + _dx);},
+            incY: function(_dy) {this.setY(y + _dy);},
             draw: function() {
                 context.fillStyle = colour;
                 context.fillRect(
-                    this.x,
-                    this.y,
-                    this.width,
-                    this.height);
+                    this.x(),
+                    this.y(),
+                    this.width(),
+                    this.height());
                 context.restore();
             },
             isCompletelyIn: function(other) {

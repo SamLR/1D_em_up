@@ -41,43 +41,14 @@
             return;
         }
 
-        game.player = {
-            x: 0,
-            dx: 5,
-            y: 450,
-            dy: 5,
-            width: 50,
-            height: 50,
-            jump: false,
-            draw: function() {
-                game.context.fillStyle = 'rgba(0, 0, 0, 1)';
-                game.context.fillRect(this.x,
-                                      this.y,
-                                      this.width,
-                                      this.height);
-                game.context.restore();
-            }
-        };
+        game.player = graphicsUtils.getBox(0, 450, 50, 50, game.context, 'rgba(0, 0, 0, 1)');
+        game.player.dx = 5;
+        game.player.dy = 5;
+        game.player.jump = false;
 
         game.platforms = [
-            { // floor section 1
-                x: 0,
-                dx: 0,
-                y: HEIGHT - 5,
-                dy: 0,
-                width: WIDTH/2 - 75,
-                height: 5,
-                draw: function () {
-                    game.context.fillStyle = 'rgba(0, 0, 0, 1)';
-                    game.context.fillRect(this.x,
-                                          this.y,
-                                          this.width,
-                                          this.height);
-                    game.context.restore();
-                }
-            }
+            graphicsUtils.getBox(0, 495, 100, 5, game.context, 'rgba(0, 0, 0, 1)')
         ];
-
         addEventListener('keydown', function (event) {
             keysDown[event.keyCode] = true;
         }, false);
@@ -94,22 +65,23 @@
         // move PC x to right
         // resolve jump
         // after X distance -> new screen
-        game.player.x += game.player.dx;
+        // game.player.x += game.player.dx;
+        game.player.incX(game.player.dx);
 
-        if (game.player.x > game.canvas.width) {
-            game.player.x = 0;
+        if (game.player.x() > game.canvas.width) {
+            game.player.setX(0);
         }
 
         if ( keysDown[32] && !game.player.jump) {
             game.player.dy = -5;
             game.player.jump = true;
-        } else if (game.player.jump && game.player.y < 300) {
+        } else if (game.player.jump && game.player.y() < 300) {
             game.player.dy = 5;
         }
 
-        game.player.y += game.player.dy;
-        if (game.player.y > 450) {
-            game.player.y = 450;
+        game.player.incY(game.player.dy);
+        if (game.player.y() > 450) {
+            game.player.setY(450);
             game.player.jump = false;
         }
     }
