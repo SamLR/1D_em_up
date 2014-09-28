@@ -2,7 +2,7 @@
 (function() {
     'use strict';
     var should = require('should');
-    require('../js/utils.js');
+    require('../js/collection-utils.js');
 
     describe('isArray', function() {
         it('should correctly identify an array', function() {
