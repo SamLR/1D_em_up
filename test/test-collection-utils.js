@@ -1,4 +1,3 @@
-/* global util */
 (function() {
     'use strict';
     var should = require('should');
