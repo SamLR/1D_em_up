@@ -21,7 +21,8 @@
             background: null,
             player: null
         },
-        lastTime = null;
+        lastTime = null,
+        keysDown = {};
 
     function init () {
         // background
@@ -38,9 +39,12 @@
 
         game.player = {
             x: 0,
+            dx: 5,
             y: 450,
+            dy: 5,
             width: 50,
             height: 50,
+            jump: false,
             draw: function() {
                 game.context.fillStyle = 'rgba(0, 0, 0, 1)';
                 game.context.fillRect(this.x,
@@ -50,6 +54,15 @@
                 game.context.restore();
             }
         };
+
+        addEventListener('keydown', function (event) {
+            keysDown[event.keyCode] = true;
+        }, false);
+
+        addEventListener('keyup', function (event) {
+            delete keysDown[event.keyCode];
+        }, false);
+
         console.log('finished init');
         requestAnimationFrame(render);
     }
@@ -58,10 +71,23 @@
         // move PC x to right
         // resolve jump
         // after X distance -> new screen
-        game.player.x  += 5;
+        game.player.x += game.player.dx;
 
         if (game.player.x > game.canvas.width) {
             game.player.x = 0;
+        }
+
+        if ( keysDown[32] && !game.player.jump) {
+            game.player.dy = -5;
+            game.player.jump = true;
+        } else if (game.player.jump && game.player.y < 300) {
+            game.player.dy = 5;
+        }
+
+        game.player.y += game.player.dy;
+        if (game.player.y > 450) {
+            game.player.y = 450;
+            game.player.jump = false;
         }
     }
 
