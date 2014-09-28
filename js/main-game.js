@@ -59,6 +59,25 @@
             }
         };
 
+        game.platforms = [
+            { // floor section 1
+                x: 0,
+                dx: 0,
+                y: HEIGHT - 5,
+                dy: 0,
+                width: WIDTH/2 - 75,
+                height: 5,
+                draw: function () {
+                    game.context.fillStyle = 'rgba(0, 0, 0, 1)';
+                    game.context.fillRect(this.x,
+                                          this.y,
+                                          this.width,
+                                          this.height);
+                    game.context.restore();
+                }
+            }
+        ];
+
         addEventListener('keydown', function (event) {
             keysDown[event.keyCode] = true;
         }, false);
@@ -124,6 +143,9 @@
         update(dt);
         drawBackground();
         game.player.draw();
+        utils.forEach(game.platforms, function (item) {
+            item.draw();
+        });
     }
 
     init();
