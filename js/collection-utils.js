@@ -2,7 +2,7 @@
  * Useful utility functions for e.g. testing for empty objects etc.
  */
 
-utils = (function() {
+collectionUtils = (function() {
     'use strict';
 
     function _isEmpty(obj) {

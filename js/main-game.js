@@ -143,7 +143,7 @@
         update(dt);
         drawBackground();
         game.player.draw();
-        utils.forEach(game.platforms, function (item) {
+        collectionUtils.forEach(game.platforms, function (item) {
             item.draw();
         });
     }
