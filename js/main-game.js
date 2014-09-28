@@ -22,7 +22,9 @@
             player: null
         },
         lastTime = null,
-        keysDown = {};
+        keysDown = {},
+        HEIGHT = 500,
+        WIDTH = 500;
 
     function init () {
         // background
@@ -30,6 +32,8 @@
         // attributes
         // TODO: look at loading config info etc.
         game.canvas = document.getElementById('game-block');
+        game.canvas.height = HEIGHT;
+        game.canvas.width = WIDTH;
         game.context = game.canvas.getContext('2d');
 
         if ( !game.context || !requestAnimationFrame ) {
