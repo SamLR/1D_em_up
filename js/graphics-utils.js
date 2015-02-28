@@ -1,5 +1,5 @@
 graphicsUtils = (function() {
-    var _getBox = function(x, y, width, height, context, colour) {
+    var _makeBox = function(x, y, width, height, context, colour) {
         var x2 = x + width,
             y2 = y + height;
         return {
@@ -17,6 +17,8 @@ graphicsUtils = (function() {
                 y = _y;
                 y2 = _y + height;
             },
+            setX2: function(_x2) {this.setX(_x2 - width);},
+            setY2: function(_y2) {this.setY(_y2 - height);},
             incX: function(_dx) {this.setX(x + _dx);},
             incY: function(_dy) {this.setY(y + _dy);},
             draw: function() {
@@ -51,6 +53,6 @@ graphicsUtils = (function() {
     };
 
     return {
-        getBox: _getBox
+        makeBox: _makeBox
     };
 }());

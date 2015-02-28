@@ -17,6 +17,8 @@ Initially use fixed design levels but ultimately introduce some degree of random
  * Jump and hold
  * flappy
  * gravity invert
+ * grow?
+ * Steady rise then instant drop
 
 ### Gravity ###
  * up down left right
@@ -30,7 +32,8 @@ Initially use fixed design levels but ultimately introduce some degree of random
 
 ### TODO ###
 * Very basic death seems to now work
-* Need to add reset screen and remove infinite jump (if jump triggered in pit)
+* Need to add reset screen and remove infinite jump (if jump triggered in pit) 
+    - Fixed but jump needs generalising
 * Generalise checking of platform
 * Alternate screens
 * import method for screens

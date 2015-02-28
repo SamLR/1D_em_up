@@ -41,14 +41,15 @@
             return;
         }
 
-        game.player = graphicsUtils.getBox(0, 450, 50, 50, game.context, 'rgba(0, 0, 0, 1)');
+        game.player = graphicsUtils.makeBox(0, 450, 50, 50, game.context, 'rgba(0, 0, 0, 1)');
         game.player.dx = 5;
         game.player.dy = 5;
         game.player.jump = false;
 
         game.platforms = [
-            graphicsUtils.getBox(0,   495, 100, 5, game.context, 'rgba(0, 0, 0, 1)'),
-            graphicsUtils.getBox(250, 495, 250, 5, game.context, 'rgba(0, 0, 0, 1)')
+            platforms.make(0,   495, 100, 5,  game.context, 'rgba(0, 0, 0, 1)'),
+            platforms.make(250, 480, 50,  20, game.context, 'rgba(0, 0, 0, 1)'),
+            platforms.make(450, 485, 50,  15, game.context, 'rgba(0, 0, 0, 1)')
         ];
 
         addEventListener('keydown', function (event) {
@@ -63,47 +64,43 @@
         requestAnimationFrame(render);
     }
 
-    function update (dt) {
-        var x; // used to determine if above platform
+    function updatePlayer (dt) {
         // move PC x to right
         // resolve jump
         // after X distance -> new screen
         // game.player.x += game.player.dx;
-        game.player.incX(game.player.dx);
+        var player = game.player;
+        player.incX(player.dx);
 
         // Character wrap
-        if (game.player.x() > game.canvas.width) {
-            game.player.setX(0);
+        if (player.x() > game.canvas.width) {
+            player.setX(0);
         }
 
-        if ( keysDown[32] && !game.player.jump) {
+        // Jump implementation
+        if ( keysDown[32] && !player.jump ) {
             // Jump has been pressed
-            game.player.dy = -5;
-            game.player.jump = true;
-        } else if (game.player.jump && game.player.y() < 300) {
+            player.dy = -5;
+            player.jump = true;
+        } else if ( player.y() < 300 ) {
             // Max jump height reached
-            game.player.dy = 5;
+            player.dy = 5;
         }
+        player.incY(player.dy);
 
-        game.player.incY(game.player.dy);
-        if (game.player.y() > 445) {
+        collectionUtils.forEach(game.platforms, function(pltfm) {
+            pltfm.landOnPlatform(player);
+        });
+
+        // Check if the player's died
+        if (player.y2() > HEIGHT ) {
             // Set character to ground
-            // game.player.setY(450);
-            game.player.jump = false;
-            game.player.dead = true;
-            x = game.player.x();
-            collectionUtils.forEach(game.platforms, function (pltfm) {
-                if (pltfm.x() < x && x < pltfm.x2()) {
-                    game.player.dead = false;
-                    game.player.setY(445); // on platform => stop falling
-                }
-            });
-
-            if (game.player.dead) console.log('boo!');
+            player.jump = false;
+            player.dead = true;
+            console.log('DEAD!');
 
         }
     }
-
 
     function drawBackground () {
         game.context.fillStyle = 'rgba(255, 0, 0, 0.5)';
@@ -130,7 +127,7 @@
         lastTime = now;
 
         game.context.clearRect(0, 0, game.canvas.width, game.canvas.height);
-        update(dt);
+        updatePlayer(dt);
         drawBackground();
         game.player.draw();
         collectionUtils.forEach(game.platforms, function (item) {
