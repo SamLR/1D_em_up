@@ -15,6 +15,7 @@
                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame,
         // 'global' object
         game = {
+            start: 0,   // hacky way to start the game
             canvas: null,
             context: null,
             then: null,
@@ -41,7 +42,7 @@
             return;
         }
 
-        game.player = graphicsUtils.makeBox(0, 450, 50, 50, game.context, 'rgba(0, 0, 0, 1)');
+        game.player = graphicsUtils.makeBox(0, 445, 50, 50, game.context, 'rgba(0, 0, 0, 1)');
         game.player.dx = 5;
         game.player.dy = 5;
         game.player.jump = false;
@@ -64,41 +65,53 @@
         requestAnimationFrame(render);
     }
 
+    function resetPlayer () {
+        game.player.setX(0);
+        game.start = false;
+        game.player.dead = false;
+        game.player.jump = false;
+    }
+
     function updatePlayer (dt) {
         // move PC x to right
         // resolve jump
         // after X distance -> new screen
         // game.player.x += game.player.dx;
         var player = game.player;
-        player.incX(player.dx);
 
-        // Character wrap
-        if (player.x() > game.canvas.width) {
-            player.setX(0);
-        }
+        if (game.start > 75) {
+            // Move the player
+            if (player.x() > game.canvas.width) {
+                // Character wrap
+                player.setX(0);
+            } else if ( keysDown[32] && !player.jump ) {
+                // Jump has been pressed
+                player.dy = -5;
+                player.jump = true;
+            } else if ( player.y() < 300 ) {
+                // Max jump height reached
+                player.dy = 5;
+            }
 
-        // Jump implementation
-        if ( keysDown[32] && !player.jump ) {
-            // Jump has been pressed
-            player.dy = -5;
-            player.jump = true;
-        } else if ( player.y() < 300 ) {
-            // Max jump height reached
-            player.dy = 5;
-        }
-        player.incY(player.dy);
+            player.incX(player.dx);
+            player.incY(player.dy);
 
-        collectionUtils.forEach(game.platforms, function(pltfm) {
-            pltfm.landOnPlatform(player);
-        });
+            collectionUtils.forEach(game.platforms, function(pltfm) {
+                pltfm.landOnPlatform(player);
+            });
 
-        // Check if the player's died
-        if (player.y2() > HEIGHT ) {
-            // Set character to ground
-            player.jump = false;
-            player.dead = true;
-            console.log('DEAD!');
+            // Check if the player's died
+            if (player.y2() > HEIGHT ) {
+                // Set character to ground
+                player.jump = false;
+                player.dead = true;
+                console.log('DEAD!');
 
+            }
+        } else if ( !game.start && keysDown[32]) {
+            game.start = 0;
+        } else {
+            game.start += 1;
         }
     }
 
@@ -127,9 +140,16 @@
         lastTime = now;
 
         game.context.clearRect(0, 0, game.canvas.width, game.canvas.height);
-        updatePlayer(dt);
         drawBackground();
-        game.player.draw();
+
+        if ( !game.player.dead ) {
+            updatePlayer(dt);
+            game.player.draw();
+        } else if ( keysDown[32] && game.player.dead ) {
+            resetPlayer();
+            game.player.draw();
+        } // else don't draw player
+
         collectionUtils.forEach(game.platforms, function (item) {
             item.draw();
         });
