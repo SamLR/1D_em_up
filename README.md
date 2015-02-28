@@ -28,3 +28,9 @@ Initially use fixed design levels but ultimately introduce some degree of random
  * freeze levels (on landing you're stuck for X seconds)
  * ?
 
+### TODO ###
+* Very basic death seems to now work
+* Need to add reset screen and remove infinite jump (if jump triggered in pit)
+* Generalise checking of platform
+* Alternate screens
+* import method for screens
