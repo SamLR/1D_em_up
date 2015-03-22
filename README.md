@@ -41,3 +41,4 @@ Initially use fixed design levels but ultimately introduce some degree of random
 * Generalise checking of platform
 * Alternate screens
 * import method for screens
+* platform below player shouldn't need searching for
