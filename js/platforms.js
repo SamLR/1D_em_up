@@ -1,5 +1,8 @@
+/*
+ * Functions to make platforms
+ */
+
 platforms = (function() {
-    // NB. This module must be initialised
     return {
         make: function(x, y, width, height, context, colour, landOnPlatform) {
             var res = graphicsUtils.makeBox(x, y, width, height, context, colour);

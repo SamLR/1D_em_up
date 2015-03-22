@@ -1,3 +1,6 @@
+/*
+ * General 'graphics' utilities. Mostly the 'makebox' function.
+ */
 graphicsUtils = (function() {
     var _makeBox = function(x, y, width, height, context, colour) {
         var x2 = x + width,

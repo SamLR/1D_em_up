@@ -48,15 +48,19 @@
         game.player.jump = false;
 
         game.screen = 0;
-        game.platforms = [[
-                platforms.make(0,   495, 150, 5,  game.context, 'rgba(255, 0, 0, 1)'),
-                platforms.make(175, 480, 50,  20, game.context, 'rgba(255, 0, 0, 1)'),
-                platforms.make(400, 485, 100, 15, game.context, 'rgba(255, 0, 0, 1)')
-            ], [
-                platforms.make(0,   495, 150, 5,  game.context, 'rgba(0, 0, 0, 1)'),
-                platforms.make(250, 480, 50,  20, game.context, 'rgba(0, 0, 0, 1)'),
-                platforms.make(425, 485, 75,  15, game.context, 'rgba(0, 0, 0, 1)')
-            ]];
+        game.platforms = [];
+
+        collectionUtils.forEach(screens, function (platformArray) {
+            var screenDef = [];
+            collectionUtils.forEach(platformArray, function (pltfm) {
+                screenDef.push(platforms.make(
+                        pltfm.x,      pltfm.y,
+                        pltfm.width,  pltfm.height,
+                        game.context, pltfm.colour
+                    ));
+            });
+            game.platforms.push(screenDef);
+        });
 
         addEventListener('keydown', function (event) {
             keysDown[event.keyCode] = true;
@@ -89,8 +93,9 @@
             // Move the player
             if (player.x() > game.canvas.width) {
                 // Character wrap
-                player.setX(0);
                 game.screen = (game.screen < game.platforms.length - 1) ? game.screen + 1: 0;
+                player.setX(0);
+                player.setY(game.platforms[game.screen][0].y());
             } 
 
             if ( keysDown[32] && !player.jump ) {
