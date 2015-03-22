@@ -19,11 +19,11 @@ screens = (function () {
             {x:200, y:485, width: 150, height: 15, colour: 'rgba(255, 86, 164, 1.0)'}, // 350
             {x:425, y:495, width: 75,  height: 5,  colour: 'rgba(255, 86, 164, 1.0)'}, // 325
         ],[/////
-            {x:0,   y:480, width: 125, height: 20, colour: 'rgba(158, 113, 255, 1.0)'}, // 150
-            {x:70,  y:440, width: 325, height: 5,  colour: 'rgba(158, 113, 255, 1.0)'}, // 150
-            {x:185, y:495, width: 115, height: 5,  colour: 'rgba(158, 113, 255, 1.0)'}, // 350
-            {x:425, y:495, width: 75,  height: 5,  colour: 'rgba(158, 113, 255, 1.0)'}, // 325
-            {x:435, y:445, width: 65,  height: 5,  colour: 'rgba(158, 113, 255, 1.0)'}, // 325
+            {x:0,   y:480, width: 125, height: 20, colour: 'rgba(255, 226, 65, 1.0)'}, // 150
+            {x:70,  y:440, width: 325, height: 5,  colour: 'rgba(255, 226, 65, 1.0)'}, // 150
+            {x:185, y:495, width: 115, height: 5,  colour: 'rgba(255, 226, 65, 1.0)'}, // 350
+            {x:425, y:495, width: 75,  height: 5,  colour: 'rgba(255, 226, 65, 1.0)'}, // 325
+            {x:435, y:445, width: 65,  height: 5,  colour: 'rgba(255, 226, 65, 1.0)'}, // 325
         ],[
             {x:0,   y:495, width: 125, height: 5,  colour: 'rgba(9, 255, 213, 1.0)'}, // 150
             {x:150, y:455, width: 125, height: 15, colour: 'rgba(9, 255, 213, 1.0)'}, // 350
