@@ -33,6 +33,12 @@ graphicsUtils = (function() {
                     this.height());
                 context.restore();
             },
+            getCentre: function() {
+                return {
+                    x: (this.x() + this.x2()) / 2.0,
+                    y: (this.y() + this.y2()) / 2.0
+                };
+            },
             isCompletelyIn: function(other) {
                 // This is wholly within other
                 return (other.x() < this.x()) && (this.x2() < other.x2()) &&
@@ -40,17 +46,12 @@ graphicsUtils = (function() {
             },
             isPartiallyIn: function(other) {
                 // There is some over lap between this & other
-                var xInBounds = other.x() < this.x() && this.x() < other.x2(),
-                    yInBounds = other.y() < this.y() && this.y() < other.y2(),
-                    x2InBounds = other.x() < this.x2() && this.x2() < other.x2(),
-                    y2InBounds = other.y() < this.y2() && this.y2() < other.y2(),
-                    skipInverse = arguments.length > 1;
+                var xInBounds = other.x() < this.x2(),
+                    yInBounds = other.y() < this.y2(),
+                    x2InBounds = other.x2() > this.x(),
+                    y2InBounds = other.y2() > this.y();
 
-                return xInBounds && yInBounds   ||
-                       xInBounds && y2InBounds  ||
-                       x2InBounds && yInBounds  ||
-                       x2InBounds && y2InBounds ||
-                       !skipInverse && other.isPartiallyIn(this, true); // Check special case
+                return xInBounds && yInBounds && x2InBounds && y2InBounds;
             }
         };
     };

@@ -3,8 +3,8 @@
     var should = require('should');
     require('../js/graphics-utils.js');
 
-    describe('getBox', function() {
-        var a = graphicsUtils.getBox(0, 0, 10, 10);
+    describe('makeBox', function() {
+        var a = graphicsUtils.makeBox(0, 0, 10, 10);
 
         it('Should return something with position, width and height', function() {
             a.should.have.properties('x', 'y', 'x2', 'y2', 'width', 'height');
@@ -45,7 +45,7 @@
             height = 20,
             a;
         beforeEach(function() {
-            a = graphicsUtils.getBox(x, y, width, height);
+            a = graphicsUtils.makeBox(x, y, width, height);
         });
 
         describe('x, y, width, height', function() {
@@ -102,10 +102,10 @@
     });
 
     describe('isCompletelyIn', function() {
-        var a = graphicsUtils.getBox( 0,  0, 100, 100),
-            b = graphicsUtils.getBox(45, 45,  10,  10),
-            c = graphicsUtils.getBox( 0,  0,  10,  10),
-            d = graphicsUtils.getBox( 5,  5,  10,  10);
+        var a = graphicsUtils.makeBox( 0,  0, 100, 100),
+            b = graphicsUtils.makeBox(45, 45,  10,  10),
+            c = graphicsUtils.makeBox( 0,  0,  10,  10),
+            d = graphicsUtils.makeBox( 5,  5,  10,  10);
 
         it('it should return true for a trivial case', function() {
             b.isCompletelyIn(a).should.be.true;
@@ -125,10 +125,10 @@
     });
 
     describe('isPartiallyIn', function() {
-        var a = graphicsUtils.getBox( 0,  0, 100, 100),
-            b = graphicsUtils.getBox(45, 45,  10,  10),
-            c = graphicsUtils.getBox( 0,  0,  10,  10),
-            d = graphicsUtils.getBox( 5,  5,  10,  10);
+        var a = graphicsUtils.makeBox( 0,  0, 100, 100),
+            b = graphicsUtils.makeBox(45, 45,  10,  10),
+            c = graphicsUtils.makeBox( 0,  0,  10,  10),
+            d = graphicsUtils.makeBox( 5,  5,  10,  10);
 
         it('it should return correctly for trivial cases', function() {
             b.isPartiallyIn(a).should.be.true;

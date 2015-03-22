@@ -36,16 +36,13 @@
         game.canvas.height = HEIGHT;
         game.canvas.width = WIDTH;
         game.context = game.canvas.getContext('2d');
+        game.context.font = '48px serif';
+        game.context.textAlign = 'center';
 
         if ( !game.context || !requestAnimationFrame ) {
             // Exit now and prevent anything else happening
             return;
         }
-
-        game.player = graphicsUtils.makeBox(0, 445, 50, 50, game.context, 'rgba(0, 0, 0, 1)');
-        game.player.dx = 5;
-        game.player.dy = 5;
-        game.player.jump = false;
 
         game.screen = 0;
         game.platforms = [];
@@ -62,6 +59,15 @@
             game.platforms.push(screenDef);
         });
 
+        game.initialY = game.platforms[0][0].y();
+        // game.initialY = 445;
+
+        game.player = graphicsUtils.makeBox(0, game.initialY, 25, 25, game.context, 'rgba(0, 0, 0, 1)');
+        game.player.dx = 5;
+        game.player.dy = 5;
+        game.player.jump = 0;
+        game.player.screens = 0;
+
         addEventListener('keydown', function (event) {
             keysDown[event.keyCode] = true;
         }, false);
@@ -76,10 +82,12 @@
 
     function resetPlayer () {
         game.player.setX(0);
-        game.player.setY(445);
+        game.player.setY(game.initialY);
         game.start = false;
         game.player.dead = false;
-        game.player.jump = false;
+        game.player.jump = 0;
+        game.player.screens = 0;
+        game.screen = 0;
     }
 
     function updatePlayer (dt) {
@@ -89,40 +97,34 @@
         // game.player.x += game.player.dx;
         var player = game.player;
 
+        // Check if the player's died
+        if (player.y() > HEIGHT ) {
+            player.dead = true;
+        }
+
         if (game.start > 10) {
-            // Move the player
+
             if (player.x() > game.canvas.width) {
                 // Character wrap
                 game.screen = (game.screen < game.platforms.length - 1) ? game.screen + 1: 0;
                 player.setX(0);
-                player.setY(game.platforms[game.screen][0].y());
-            } 
-
-            if ( keysDown[32] && !player.jump ) {
-                // Jump has been pressed
-                player.dy = -5;
-                player.jump = true;
-            } else if ( player.y() < 300 ) {
-                // Max jump height reached
-                player.dy = 5;
+                // Next screen start value
+                player.setY(game.platforms[game.screen][0].y() - 5);
+                player.screens += 1;
             }
+
+            player.jump = (player.jump > 0) ? player.jump - 1: 0;
+            player.dy = (player.jump > 0) ? -5: 5;
 
             player.incX(player.dx);
             player.incY(player.dy);
 
             collectionUtils.forEach(game.platforms[game.screen], function (pltfm) {
                 pltfm.landOnPlatform(player);
+                if ( keysDown[32] && player.jump === 0 && player.y2() > pltfm.y()) {
+                    player.jump =  21; // how many ticks of 'jump'
+                }
             });
-
-            // Check if the player's died
-            // if (player.y2() > HEIGHT ) {
-            if (player.y() > HEIGHT ) {
-                // Set character to ground
-                player.jump = false;
-                player.dead = true;
-                game.screen = 0;
-                console.log('DEAD!');
-            }
         } else if ( !game.start && keysDown[32]) {
             game.start = 0;
         } else {
@@ -160,10 +162,14 @@
         if ( !game.player.dead ) {
             updatePlayer(dt);
             game.player.draw();
-        } else if ( keysDown[32] && game.player.dead ) {
+        }  else if ( keysDown[32] && game.player.dead ) {
             resetPlayer();
             game.player.draw();
-        } // else don't draw player
+        } else if (game.player.dead) {
+            game.context.fillStyle = '#000000';
+            game.context.fillText('DEAD!', 250, 250);
+            game.context.fillText('Screens survived: '+game.player.screens, 250, 300);
+        }
 
         collectionUtils.forEach(game.platforms[game.screen], function (item) {
             item.draw();
